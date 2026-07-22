@@ -92,6 +92,130 @@ Komputer został umieszczony w jednostce organizacyjnej **Workstations**, co umo
 
 ---
 
+---
+
+# Group Policy (GPO)
+
+W środowisku wdrożono zasady Group Policy (GPO), które umożliwiają centralne zarządzanie konfiguracją użytkowników oraz komputerów znajdujących się w domenie.
+
+W celu zachowania przejrzystości konfiguracji zastosowano kilka oddzielnych obiektów GPO odpowiedzialnych za różne obszary administracji.
+
+## Skonfigurowane polityki
+
+| Nazwa GPO | Przeznaczenie |
+|------------|---------------|
+| Default Domain Policy | Konfiguracja polityki haseł oraz blokowania kont |
+| STD - User Restriction | Ograniczenia dla użytkowników spoza działu IT |
+| Departments Drive Mapping | Automatyczne mapowanie dysków sieciowych |
+| SEC - Advanced Audit Policy | Centralna konfiguracja audytu zdarzeń bezpieczeństwa |
+
+---
+
+## Polityka ograniczeń użytkowników
+
+Dla użytkowników działów Finance, HR, Marketing oraz Management wdrożono politykę **STD - User Restriction**.
+
+Polityka nie jest stosowana do działu IT, którego użytkownicy zachowują pełne uprawnienia administracyjne wymagane do wykonywania obowiązków.
+
+Skonfigurowane ograniczenia:
+
+- blokada Panelu sterowania,
+- blokada aplikacji Ustawienia systemu,
+- blokada programu Windows PowerShell,
+- blokada Wiersza polecenia (CMD),
+- blokada Edytora rejestru,
+- blokada Microsoft Store,
+- wyłączenie menu „Uruchom”,
+- ograniczenie skrótów systemowych z klawiszem Windows.
+
+Celem wdrożenia jest ograniczenie możliwości modyfikowania konfiguracji systemu przez standardowych użytkowników oraz zmniejszenie ryzyka nieautoryzowanych zmian.
+
+---
+
+---
+
+# Mapowanie dysków sieciowych
+
+W celu zapewnienia użytkownikom automatycznego dostępu do zasobów sieciowych wdrożono politykę **Departments Drive Mapping**.
+
+Mapowanie dysków realizowane jest za pomocą mechanizmu **Group Policy Preferences (Drive Maps)**.
+
+Po zalogowaniu użytkownika odpowiednie dyski sieciowe są automatycznie mapowane z serwera plików.
+
+## Skonfigurowane dyski
+
+| Litera | Udział sieciowy |
+|---------|-----------------|
+| F: | \\DC01\Finance |
+| H: | \\DC01\HR |
+| I: | \\DC01\IT |
+| M: | \\DC01\Marketing |
+| P: | \\DC01\Public |
+| X: | \\DC01\Management |
+
+Takie rozwiązanie umożliwia centralne zarządzanie zasobami sieciowymi oraz eliminuje konieczność ręcznego mapowania dysków na stacjach roboczych.
+
+---
+
+---
+
+# Polityka haseł
+
+W ramach **Default Domain Policy** skonfigurowano centralną politykę haseł obowiązującą wszystkich użytkowników domeny.
+
+## Konfiguracja
+
+| Parametr | Wartość |
+|-----------|----------|
+| Minimalna długość hasła | 10 znaków |
+| Historia haseł | 20 poprzednich haseł |
+| Maksymalny okres ważności | 90 dni |
+| Minimalny okres ważności | 1 dzień |
+| Wymuszona złożoność | Tak |
+| Reversible Encryption | Wyłączona |
+
+Wdrożona polityka zwiększa poziom bezpieczeństwa poprzez wymuszenie stosowania silniejszych haseł oraz ograniczenie możliwości ponownego wykorzystania poprzednich haseł.
+
+---
+
+---
+
+# Account Lockout Policy
+
+W celu ochrony przed próbami odgadnięcia haseł skonfigurowano mechanizm blokowania kont użytkowników.
+
+## Konfiguracja
+
+| Parametr | Wartość |
+|-----------|----------|
+| Liczba nieudanych logowań | 5 |
+| Czas blokady konta | 30 minut |
+| Reset licznika prób | 30 minut |
+
+Mechanizm ten znacząco utrudnia przeprowadzanie ataków typu brute-force na konta domenowe.
+
+---
+
+---
+
+# Advanced Audit Policy
+
+W środowisku wdrożono oddzielną politykę **SEC - Advanced Audit Policy**, odpowiedzialną za rejestrowanie zdarzeń związanych z bezpieczeństwem domeny.
+
+Skonfigurowano między innymi audyt:
+
+- logowania użytkowników,
+- nieudanych prób logowania,
+- blokowania kont,
+- zarządzania użytkownikami,
+- zarządzania grupami,
+- zmian w usługach katalogowych Active Directory,
+- zmian polityk bezpieczeństwa,
+- dostępu do udziałów sieciowych.
+
+Rejestrowane zdarzenia są zapisywane w dzienniku **Windows Security Log**, co umożliwia analizę aktywności użytkowników oraz wykrywanie potencjalnych incydentów bezpieczeństwa.
+---
+
 ## Wykonane działania
 
 Na obecnym etapie skonfigurowano:
