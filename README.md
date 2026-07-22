@@ -43,8 +43,8 @@ Na obecnym etapie wykonano:
 
 ## Dokumentacja
 
-- [Konfiguracja Windows Server](docs/Windows_Server.md)
-- [Konfiguracja Active Directory](docs/Active_Directory.md)
+- [Konfiguracja Windows Server](Windows_Server.md)
+- [Konfiguracja Active Directory](Active_Directory.md)
 
 ---
 
